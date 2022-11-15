@@ -5,7 +5,6 @@ import 'dart:math';
 // https://github.com/skylon07
 
 class List1<ElemType> implements List<ElemType> {
-    
     /// see List.filled() documentation
     factory List1.filled(int length, ElemType fill, {bool growable = false}) =>
         List1(List.filled(length, fill, growable: growable));
