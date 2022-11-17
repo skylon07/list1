@@ -1,5 +1,3 @@
-library list1;
-
 import 'dart:math';
 
 // https://github.com/skylon07

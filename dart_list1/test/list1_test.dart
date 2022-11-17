@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:list1/list1.dart';
+import 'package:list1/types.dart';
 
 void main() {
     // TODO: construction tests
