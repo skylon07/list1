@@ -1,1 +1,1 @@
-export 'src/list1type.dart' show List1;
+export 'src/list1type.dart';
