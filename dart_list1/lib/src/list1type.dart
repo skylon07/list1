@@ -2,7 +2,7 @@ import 'dart:math';
 
 // https://github.com/skylon07
 
-class List1<ElemType> implements List<ElemType> {
+class List1<ElemType> {
     /// see List.filled() documentation
     factory List1.filled(int length, ElemType fill, {bool growable = false}) =>
         List1(List.filled(length, fill, growable: growable));
@@ -29,13 +29,13 @@ class List1<ElemType> implements List<ElemType> {
 
 
     static List1<NewType> castFrom<ElemType, NewType>(List1<ElemType> source) =>
-        List1<NewType>(List.castFrom(source));
+        List1<NewType>(List.castFrom<ElemType, NewType>(source._internalList));
     
     static void copyRange<ElemType>(List1<ElemType> target, int at, List1<ElemType> source, [int? start, int? end]) =>
         List.copyRange(
-            target,
+            target._internalList,
             at - 1,
-            source,
+            source._internalList,
             start != null ?
                 start - 1 : null,
             end != null ?
@@ -43,7 +43,7 @@ class List1<ElemType> implements List<ElemType> {
         );
 
     static void writeIterable<ElemType>(List1<ElemType> target, int at, Iterable<ElemType> source) =>
-        List.writeIterable(target, at - 1, source);
+        List.writeIterable(target._internalList, at - 1, source);
 
     final List<ElemType> _internalList;
 
