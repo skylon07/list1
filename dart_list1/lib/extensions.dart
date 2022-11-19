@@ -1,1 +1,2 @@
-export 'src/iterable.dart';
+export 'src/iterableExtension.dart';
+export 'src/listExtension.dart';

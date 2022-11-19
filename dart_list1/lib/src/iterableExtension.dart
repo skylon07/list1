@@ -5,7 +5,3 @@ extension List1Iterable on Iterable {
         return List1(this.toList(growable: growable));
     }
 }
-
-class TestClass {
-    
-}
