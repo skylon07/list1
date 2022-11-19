@@ -45,15 +45,12 @@ class List1<ElemType> implements List<ElemType> {
     static void writeIterable<ElemType>(List1<ElemType> target, int at, Iterable<ElemType> source) =>
         List.writeIterable(target, at - 1, source);
 
+    final List<ElemType> _internalList;
 
-    List<ElemType> _internalList = [];
+    const List1(List<ElemType> this._internalList);
 
-    List1([List<ElemType>? list]) {
-        if (list != null) {
-            _internalList = list;
-        }
-    }
-    
+    @override
+    String toString() => "List1${_internalList}";
     
     @override
     ElemType get first => _internalList.first;
