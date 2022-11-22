@@ -2,7 +2,7 @@ import 'dart:math';
 
 // https://github.com/skylon07
 
-class List1<ElemType> {
+class List1<ElemType> implements Iterable<ElemType> {
     /// see List.filled() documentation
     factory List1.filled(int length, ElemType fill, {bool growable = false}) =>
         List1(List.filled(length, fill, growable: growable));
@@ -51,6 +51,8 @@ class List1<ElemType> {
 
     @override
     String toString() => "List1${_internalList}";
+
+    List<ElemType> asList() => _internalList;
     
     @override
     ElemType get first => _internalList.first;
