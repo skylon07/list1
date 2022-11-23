@@ -170,11 +170,6 @@ class List1<ElemType> implements Iterable<ElemType> {
         return _internalList.elementAt(index - 1);
     }
 
-    ElemType elementAt_zero(int index) {
-        return _internalList.elementAt(index);
-    }
-
-    @override
     bool every(bool test(ElemType element)) {
         return _internalList.every(test);
     }
