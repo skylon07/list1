@@ -70,15 +70,34 @@ class List1<ElemType> implements Iterable<ElemType> {
     }
 
     ElemType operator [](int index) {
-        _checkRange(index);
+        _checkRange(index: index);
         return _internalList[index - 1];
     }
 
-    void _checkRange(int indexOrStart, [int? end]) {
-        var useStartAndEnd = end != null;
-        if (useStartAndEnd) {
-            var start = indexOrStart;
-            if (start <= 0 || start > _internalList.length) {
+    void _checkRange({int? index, int? start, int? end, bool insertMode = false}) {
+        var useIndex = index != null;
+        if (useIndex) {
+            int maxIndex = _internalList.length + (insertMode ? 1 : 0);
+            if (index <= 0) {
+                throw RangeError.value(
+                    index,
+                    "index",
+                    "Index out of range: index must be greater than 0"
+                );
+            } else if (index > maxIndex) {
+                throw RangeError.value(
+                    index,
+                    "index",
+                    "Index out of range: index should not be greater than ${_internalList.length}"
+                );
+            }
+        } else {
+            if (start == null || end == null) {
+                throw AssertionError("start and end must both be provided if index is not");
+            }
+
+            int maxIndex = _internalList.length + (insertMode ? 1 : 0);
+            if (start <= 0 || start > maxIndex) {
                 throw RangeError.range(
                     start,
                     1,
@@ -86,7 +105,7 @@ class List1<ElemType> implements Iterable<ElemType> {
                     "start",
                     "Invalid value"
                 );
-            } else if (end < start || end > _internalList.length) {
+            } else if (end < start || end > maxIndex) {
                 throw RangeError.range(
                     end,
                     start,
@@ -95,27 +114,11 @@ class List1<ElemType> implements Iterable<ElemType> {
                     "Invalid value"
                 );
             }
-
-        } else {
-            var index = indexOrStart;
-            if (index <= 0) {
-                throw RangeError.value(
-                    index,
-                    "index",
-                    "Index out of range: index must be greater than 0"
-                );
-            } else if (index > _internalList.length) {
-                throw RangeError.value(
-                    index,
-                    "index",
-                    "Index out of range: index should not be greater than ${_internalList.length}"
-                );
-            }
         }
     }
 
     void operator []=(int index, ElemType value) {
-        _checkRange(index);
+        _checkRange(index: index);
         _internalList[index - 1] = value;
     }
 
@@ -148,7 +151,7 @@ class List1<ElemType> implements Iterable<ElemType> {
     }
 
     ElemType elementAt(int index) {
-        _checkRange(index);
+        _checkRange(index: index);
         return _internalList.elementAt(index - 1);
     }
 
@@ -161,8 +164,8 @@ class List1<ElemType> implements Iterable<ElemType> {
     }
 
     void fillRange(int start, int end, [ElemType? fillValue]) {
-        _checkRange(start, end);
-        _internalList.fillRange(start - 1, end - 1, fillValue);
+        _checkRange(start: start, end: end);
+        _internalList.fillRange(start - 1, end, fillValue);
     }
 
     ElemType firstWhere(bool test(ElemType element), {ElemType orElse()?}) {
@@ -182,27 +185,27 @@ class List1<ElemType> implements Iterable<ElemType> {
     }
 
     Iterable<ElemType> getRange(int start, int end) {
-        _checkRange(start, end);
+        _checkRange(start: start, end: end);
         return _internalList.getRange(start - 1, end);
     }
 
     int indexOf(element, [int start = 1]) {
-        _checkRange(start);
+        _checkRange(start: start);
         return _internalList.indexOf(element, start - 1);
     }
 
     int indexWhere(bool test(ElemType element), [int start = 1]) {
-        _checkRange(start);
+        _checkRange(start: start);
         return _internalList.indexWhere(test, start - 1);
     }
 
     void insert(int index, element) {
-        _checkRange(index);
+        _checkRange(index: index, insertMode: true);
         _internalList.insert(index - 1, element);
     }
 
     void insertAll(int index, Iterable<ElemType> iterable) {
-        _checkRange(index);
+        _checkRange(index: index, insertMode: true);
         _internalList.insertAll(index - 1, iterable);
     }
 
@@ -218,7 +221,7 @@ class List1<ElemType> implements Iterable<ElemType> {
 
     int lastIndexOf(element, [int? start]) {
         if (start != null) {
-            _checkRange(start);
+            _checkRange(start: start);
             return _internalList.lastIndexOf(element, start - 1);
         } else {
             return _internalList.lastIndexOf(element);
@@ -227,7 +230,7 @@ class List1<ElemType> implements Iterable<ElemType> {
 
     int lastIndexWhere(bool test(ElemType element), [int? start]) {
         if (start != null) {
-            _checkRange(start);
+            _checkRange(start: start);
             return _internalList.lastIndexWhere(test, start - 1);
         } else {
             return _internalList.lastIndexWhere(test);
@@ -251,7 +254,7 @@ class List1<ElemType> implements Iterable<ElemType> {
     }
 
     ElemType removeAt(int index) {
-        _checkRange(index);
+        _checkRange(index: index);
         return _internalList.removeAt(index - 1);
     }
 
@@ -260,7 +263,7 @@ class List1<ElemType> implements Iterable<ElemType> {
     }
 
     void removeRange(int start, int end) {
-        _checkRange(start, end);
+        _checkRange(start: start, end: end);
         _internalList.removeRange(start - 1, end);
     }
 
@@ -269,7 +272,7 @@ class List1<ElemType> implements Iterable<ElemType> {
     }
 
     void replaceRange(int start, int end, Iterable<ElemType> replacements) {
-        _checkRange(start, end);
+        _checkRange(start: start, end: end);
         _internalList.replaceRange(start - 1, end, replacements);
     }
 
@@ -280,12 +283,12 @@ class List1<ElemType> implements Iterable<ElemType> {
     Iterable<ElemType> get reversed => _internalList.reversed;
 
     void setAll(int index, Iterable<ElemType> iterable) {
-        _checkRange(index);
+        _checkRange(index: index);
         _internalList.setAll(index, iterable);
     }
 
     void setRange(int start, int end, Iterable<ElemType> iterable, [int skipCount = 0]) {
-        _checkRange(start, end);
+        _checkRange(start: start, end: end);
         _internalList.setRange(start - 1, end, iterable);
     }
 
@@ -312,7 +315,7 @@ class List1<ElemType> implements Iterable<ElemType> {
     }
 
     List1<ElemType> sublist(int start, [int? end]) {
-        _checkRange(start, end);
+        _checkRange(start: start, end: end);
         return List1(_internalList.sublist(start - 1, end));
     }
 
